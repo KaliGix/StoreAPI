@@ -4,46 +4,54 @@ const magnifyingGlass = document.querySelector("#magnifying_glass");
 const userAccount = document.querySelector(".account-user");
 const shoppingCart = document.querySelector(".account-cart");
 
+searchProducts.addEventListener("keyup", searchItem);
 
-async function fethAPI(){
-    const url = new Request("https://fakestoreapi.com/products");
-    try {
-         const response = await fetch(url);
+renderData("");
 
-         if(!response.ok)
-            throw new Error(`Response Status: ${response.status}`);
+async function fethAPI() {
+  const url = new Request("https://fakestoreapi.com/products");
+  try {
+    const response = await fetch(url);
 
+    if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
 
-         const data = await response.json();
-         console.log(data);
+    const data = await response.json();
 
-         return data;
-    } catch (error) {
-        console.error(error.message);
-    }
-   return {};
+    return data;
+  } catch (error) {
+    
+    if(error instanceof TypeError){
+      console.log("Network error: check your interenet connection");
+    } else
+      console.log("Application error: ", error.message);
+  }
 }
 
-async function renderData(){
+async function renderData(query) {
+  let data = await fethAPI();
+  productList.innerHtml = "";
+  
+  if (query!=="") {
+    data = data.filter(item => {
+      return item.title.toLowerCase().trim().includes(query);
+    });
+  }
 
-    const data = await  fethAPI();
-    productList.innerHtml = "";
-    let html = "";
-    
-
-       productList.innerHTML = data.map((item) =>
-          `<div class="card">
+  productList.innerHTML = data
+    .map(
+      (item) =>
+        `<div class="card">
             <img src="${item.image}" alt="image">
             <p>${item.title}</p>
             <p>${item.price}</p>
             <p>${item.rating.rate}</p>
             <p>${item.rating.count}</p>
-        </div>`
-        ).join("");
-    }
+        </div>`,
+    )
+    .join("");
+}
 
-renderData();
-
-
-
-
+async function searchItem(keyboardEvent) {
+  let query = searchProducts.value.toLowerCase().trim();
+  await renderData(query);
+}
