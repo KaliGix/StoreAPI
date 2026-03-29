@@ -3,16 +3,21 @@ const productList = document.querySelector(".container-products");
 const magnifyingGlass = document.querySelector("#magnifying_glass");
 const userAccount = document.querySelector(".account-user");
 const shoppingCart = document.querySelector(".account-cart");
+const loadingText = document.querySelector(".load-data");
+const errorMessage = document.querySelector(".error-message");
 
 searchProducts.addEventListener("keyup", searchItem);
 
 renderData("");
 
 async function fethAPI() {
+
+
   const url = new Request("https://fakestoreapi.com/products");
   try {
+    showLoadingText("flex");
     const response = await fetch(url);
-
+    
     if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
 
     const data = await response.json();
@@ -21,11 +26,24 @@ async function fethAPI() {
   } catch (error) {
     
     if(error instanceof TypeError){
-      console.log("Network error: check your interenet connection");
+      showErrorMessage("Network error: check your interenet connection");
     } else
-      console.log("Application error: ", error.message);
+      showErrorMessage("Application error: ", error.message);
   }
 }
+
+function showLoadingText(displayType){
+  errorMessage.style.display = "none";
+  loadingText.style.display = displayType;
+}
+
+function showErrorMessage(error){
+  errorMessage.style.display = "flex";
+  errorMessage.textContent = error;
+  loadingText.style.display = "none";
+}
+
+
 
 async function renderData(query) {
   let data = await fethAPI();
@@ -49,6 +67,8 @@ async function renderData(query) {
         </div>`,
     )
     .join("");
+
+    showLoadingText("none");
 }
 
 async function searchItem(keyboardEvent) {
