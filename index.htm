@@ -1,47 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>verbatim commerce</title>
-    <link rel="stylesheet" href="styles/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
     <header class="nav">
-        <section class="logo">
-            <img src="resources/Logo with Shopping Bag and Tech Design.png" alt="logo of the company">
-        </section>
+      <section class="logo">
+        <a href="index.htm">
+          <img
+            src="resources/Logo with Shopping Bag and Tech Design.png"
+            alt="logo of the company"
+          />
+        </a>
+      </section>
 
-        <section class="search">
-                <input type="text"  id="find-product" placeholder="type your product" autocomplete="off">
-                <img src="resources/lupa.png" id="magnifying_glass" alt="">
-        </section>
+      <section class="search">
+        <!-- <select class="dropdown">
+                <option selected >All</option>
+                <option>Computer</option>
+                <option>Men's Fashion</option>
+                <option>Girl's Fashion</option>
+                <option>Women's Fashion</option>
 
-        <section class="account">
-            <div class="account-user">
-                 <img src="resources/userIcon.png">
-                  <p>My account</p>
-            </div>
-           
-            <div class="account-cart">
-                 <img src="resources/cartIcon.png">
-                 <p>my cart</p>
-            </div>
-           
-        </section>
+            </select> -->
+        <input
+          type="text"
+          id="find-product"
+          placeholder="type your product"
+          autocomplete="off"
+        />
+        <img src="resources/lupa.png" id="magnifying_glass" alt="" />
+      </section>
+
+      <section class="account">
+        <div class="account-user">
+          <img src="resources/userIcon.png" />
+          <p>My account</p>
+        </div>
+
+        <div class="account-cart">
+          <img src="resources/cartIcon.png" />
+          <p>my cart</p>
+        </div>
+      </section>
     </header>
 
     <main class="container">
-        <div class="container-products">
-        </div>
-        <div class="load-data">Loading data...</div>
-        <div class="error-message"></div>
+      <div class="container-products"></div>
+      <div class="load-data">Loading data...</div>
+      <div class="error-message"></div>
     </main>
 
     <footer>
-        <p>&copy; copyright 2026 kaligix -all right reserved </p>
+      <p>&copy; copyright 2026 kaligix -all right reserved</p>
     </footer>
-</body>
+  </body>
 
-<script type="text/javascript" src="scripts/app.js"></script>
+  <script type="text/javascript" src="scripts/app.js"></script>
 </html>

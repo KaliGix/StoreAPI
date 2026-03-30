@@ -8,12 +8,7 @@ const errorMessage = document.querySelector(".error-message");
 
 searchProducts.addEventListener("keyup", searchItem);
 
-productList.addEventListener('click', (event) => {
-    if(event.target.classList.contains("card") || event.target.classList.contains("image-product"))
-    {
-      console.log("Card is calling");
-    }
-});
+
 renderData("");
 
 async function fethAPI() {
@@ -65,11 +60,20 @@ async function renderData(query) {
     .map(
       (item) =>
         `<div class="card">
-            <img src="${item.image}" class="image-product" alt="image">
-            <p>${item.title}</p>
-            <p class="price">${item.price}$</p>
-            <p class="rating">${item.rating.rate}  ${item.rating.count}</p>
-            <button type="button" class="btn">Add to cart</button>
+           <div class="product-image">
+              <a href="product.htm">
+                <img src="${item.image}"  alt="image">
+              </a>
+            </div>
+
+            <div class="product-info">
+              <a href="product.htm">
+                  <h6>${item.title}</h6>
+                  <p class="price">${item.price}$</p>
+                  <p class="rating">${item.rating.rate} / 5 <span class="star">★</span>  ${item.rating.count} reviews</p>
+              </a>
+                <button type="button" class="btn">Add to cart</button>
+            </div>
         </div>`,
     )
     .join("");
