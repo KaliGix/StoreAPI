@@ -208,12 +208,9 @@ a{
     background-color:  #f0c92c;
 }
 
-
-
 .btn:hover{
     cursor: pointer;
 }
-
 
 .load-data,
 .error-message{ 

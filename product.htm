@@ -1,36 +1,116 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>product viewer</title>
-    <link rel="stylesheet" href="styles/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles/style.css" />
+    <style>
+      .container-products {
+        width: 100%;
+      }
+      .card {
+        width: 900px;
+        height: 700px;
+
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        align-items: center;
+        gap: 20px;
+
+        
+      }
+
+      .product-image img {
+        width: 100%;
+        height: 600px;
+      }
+
+      .product-info .price,
+      .product-info .rating,
+      .product-info {
+        font-size: 50px;
+      }
+    </style>
+  </head>
+  <body>
     <header class="nav">
-        <section class="logo">
-            <img src="resources/Logo with Shopping Bag and Tech Design.png" alt="logo of the company">
-        </section>
+      <section class="logo">
+        <a href="index.htm">
+          <img
+            src="resources/Logo with Shopping Bag and Tech Design.png"
+            alt="logo of the company"
+          />
+        </a>
+      </section>
 
-        <section class="search">
-                <input type="text"  id="find-product" placeholder="type your product" autocomplete="off">
-                <img src="resources/lupa.png" id="magnifying_glass" alt="">
-        </section>
+      <section class="search">
+        <input
+          type="text"
+          id="find-product"
+          placeholder="type your product"
+          autocomplete="off"
+        />
+        <img src="resources/lupa.png" id="magnifying_glass" alt="" />
+      </section>
 
-        <section class="account">
-            <div class="account-user">
-                 <img src="resources/userIcon.png">
-                  <p>My account</p>
-            </div>
-           
-            <div class="account-cart">
-                 <img src="resources/cartIcon.png">
-                 <p>my cart</p>
-            </div>
-           
-        </section>
+      <section class="account">
+        <div class="account-user">
+          <img src="resources/userIcon.png" />
+          <p>My account</p>
+        </div>
+
+        <div class="account-cart">
+          <img src="resources/cartIcon.png" />
+          <p>my cart</p>
+        </div>
+      </section>
     </header>
-</body>
 
-<script src="scripts/app.js"></script>
+    <main class="container">
+      <div class="container-products"></div>
+      <div class="load-data">Loading data...</div>
+      <div class="error-message"></div>
+    </main>
+
+    <footer>
+      <p>&copy; copyright 2026 kaligix -all right reserved</p>
+    </footer>
+  </body>
+
+  <script>
+    const producList = document.querySelector(".container-products");
+    const params = new URLSearchParams(window.location.search);
+
+    const product = {
+      id: params.get("id"),
+      title: params.get("title"),
+      description: params.get("description"),
+      price: params.get("price"),
+      urlImage: params.get("urlImage"),
+      ratingRate: params.get("ratingRate"),
+      ratingCount: params.get("ratingCount"),
+    };
+
+    function renderItemSelected() {
+      producList.innerHTML = `<div class="card">
+            <div class="product-image">
+                  <img src="${product.urlImage}"  alt="image">
+              </div>
+
+              <div class="product-info">
+                
+                 <h6>${product.title}</h6>
+                 <p data-id="${product.id}"></p>
+                 <p class="description">${product.description}</p>
+                 <p class="price">${product.price}$</p>
+                 <p class="rating">${product.ratingRate} / 5 <span class="star">★</span>  ${product.ratingCount} reviews</p>
+                
+                 <button type="button" class="btn">Add to cart</button>
+              </div>
+            </div>`;
+    }
+
+    renderItemSelected();
+  </script>
 </html>
