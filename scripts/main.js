@@ -1,3 +1,5 @@
+import { fethAPI } from "./api.js";
+
 const searchProducts = document.getElementById("find-product");
 const productList = document.querySelector(".container-products");
 const magnifyingGlass = document.querySelector("#magnifying_glass");
@@ -10,21 +12,14 @@ searchProducts.addEventListener("keyup", searchItem);
 
 renderData("");
 
-async function fethAPI() {
-  const url = new Request("https://fakestoreapi.com/products");
+async function init(){
   try {
-    showLoadingText("flex");
-    const response = await fetch(url);
-
-    if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-
-    const data = await response.json();
-
+     showLoadingText("flex");
+    const data = await fethAPI();
+  
     return data;
   } catch (error) {
-    if (error instanceof TypeError) {
-      showErrorMessage("Network error: check your interenet connection");
-    } else showErrorMessage("Application error: ", error.message);
+    showErrorMessage(errorMessage);
   }
 }
 
@@ -40,7 +35,7 @@ function showErrorMessage(error) {
 }
 
 async function renderData(query) {
-  let data = await fethAPI();
+  let data = await init();
   productList.innerHtml = "";
 
   if (query !== "") {
@@ -48,6 +43,8 @@ async function renderData(query) {
       return item.title.toLowerCase().trim().includes(query);
     });
   }
+
+  console.log("THE RETURNED DATA: ", data);
 
   productList.innerHTML = data
     .map(

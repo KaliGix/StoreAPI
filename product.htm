@@ -68,6 +68,7 @@
     </header>
 
     <main class="container">
+      
       <div class="container-products"></div>
       <div class="load-data">Loading data...</div>
       <div class="error-message"></div>
@@ -78,39 +79,6 @@
     </footer>
   </body>
 
-  <script>
-    const producList = document.querySelector(".container-products");
-    const params = new URLSearchParams(window.location.search);
-
-    const product = {
-      id: params.get("id"),
-      title: params.get("title"),
-      description: params.get("description"),
-      price: params.get("price"),
-      urlImage: params.get("urlImage"),
-      ratingRate: params.get("ratingRate"),
-      ratingCount: params.get("ratingCount"),
-    };
-
-    function renderItemSelected() {
-      producList.innerHTML = `<div class="card">
-            <div class="product-image">
-                  <img src="${product.urlImage}"  alt="image">
-              </div>
-
-              <div class="product-info">
-                
-                 <h6>${product.title}</h6>
-                 <p data-id="${product.id}"></p>
-                 <p class="description">${product.description}</p>
-                 <p class="price">${product.price}$</p>
-                 <p class="rating">${product.ratingRate} / 5 <span class="star">★</span>  ${product.ratingCount} reviews</p>
-                
-                 <button type="button" class="btn">Add to cart</button>
-              </div>
-            </div>`;
-    }
-
-    renderItemSelected();
-  </script>
+  <script type="module" src="scripts/product.js"></script>
+  
 </html>
