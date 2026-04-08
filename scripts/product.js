@@ -16,7 +16,7 @@ async function init() {
     showLoadingText("flex");
     const data = await fethAPI();
     productsData = data;
-    
+    showLoadingText("none");
   } catch (error) {
     showErrorMessage(errorMessage);
   }
@@ -45,16 +45,12 @@ function searchProduct(event) {
   }
 
   try {
-    const data =  productsData || [];
-
-    console.log(data);
-    console.log(query);
+    const data = productsData || [];
 
     const filtered = data.filter((item) =>
-      item.title.toLowerCase().includes(query)
+      item.title.toLowerCase().includes(query),
     );
 
-    console.log("filtered data:", filtered);
     renderResults(filtered);
   } catch (error) {
     console.error(error);
@@ -63,17 +59,12 @@ function searchProduct(event) {
 
 //new code
 function renderResults(items) {
-
-  console.log("rendering results:", items);
   if (items.length === 0) {
     resultsContainer.innerHTML = `<div class="result-item">No results</div>`;
-    console.log("No results found");
   } else {
     resultsContainer.innerHTML = items
       .map((item) => `<div class="result-item">${item.title}</div>`)
       .join("");
-
-      console.log("Results rendered successfully");
   }
 
   resultsContainer.classList.remove("hidden");
@@ -87,7 +78,7 @@ function renderItemSelected() {
 
               <div class="product-info">
                 
-                 <h6>${params.get("title")}</h6>
+                 <h6 class="product-title">${params.get("title")}</h6>
                  <p data-id="${params.get("id")}"></p>
                  <p class="description">${params.get("description")}</p>
                  <p class="price">${params.get("price")}$</p>
