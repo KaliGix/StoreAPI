@@ -5,33 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>product viewer</title>
     <link rel="stylesheet" href="styles/style.css" />
+
     <style>
-      .container-products {
-        width: 100%;
-      }
-      .card {
-        width: 900px;
-        height: 700px;
+    .container-products {
+      width: 100%;
+    }
+    .card {
+      width: 900px;
+      height: 700px;
+   
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      align-items: center;
+      gap: 20px;
+    }
 
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        align-items: center;
-        gap: 20px;
+    #resultsContainer {
+      position: absolute;
+      top: 11%;
+      left: 20;
+      width: 600px;
+      background: white;
+      border: 1px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+      border-radius: 5px;
+      
+    }
 
-        
-      }
+    .hidden {
+      display: none;
+    }
 
-      .product-image img {
-        width: 100%;
-        height: 600px;
-      }
+    .result-item{
+      cursor: pointer;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
-      .product-info .price,
-      .product-info .rating,
-      .product-info {
-        font-size: 50px;
-      }
-    </style>
+    }
+
+     .result-item:hover{
+      background-color: #ccc;
+      
+     }
+    .product-title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 600px;
+    }
+
+    .product-info .price,
+    .product-info .rating,
+    .product-info {
+      font-size: 50px;
+    }
+  </style>
   </head>
   <body>
     <header class="nav">
@@ -52,6 +87,7 @@
           autocomplete="off"
         />
         <img src="resources/lupa.png" id="magnifying_glass" alt="" />
+        <div id="resultsContainer" class="hidden"></div>
       </section>
 
       <section class="account">
@@ -68,7 +104,6 @@
     </header>
 
     <main class="container">
-      
       <div class="container-products"></div>
       <div class="load-data">Loading data...</div>
       <div class="error-message"></div>
@@ -80,5 +115,5 @@
   </body>
 
   <script type="module" src="scripts/product.js"></script>
-  
+
 </html>

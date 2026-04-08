@@ -1,22 +1,28 @@
-import { fethAPI } from "./api.js";
+import { fethAPI, errorMessage } from "./api.js";
 
-const producList = document.querySelector(".container-products");
+const productList = document.querySelector(".container-products");
 const findProduct = document.querySelector("#find-product");
+const resultsContainer = document.getElementById("resultsContainer");
 const loadingText = document.querySelector(".load-data");
 const errMessage = document.querySelector(".error-message");
 const params = new URLSearchParams(window.location.search);
 
-findProduct.addEventListener("keyup", searchProduct);
+findProduct.addEventListener("input", searchProduct);
+
+let productsData = [];
 
 async function init() {
   try {
     showLoadingText("flex");
     const data = await fethAPI();
-    return data;
+    productsData = data;
+    
   } catch (error) {
     showErrorMessage(errorMessage);
   }
 }
+
+init();
 
 function showLoadingText(displayType) {
   errMessage.style.display = "none";
@@ -29,75 +35,63 @@ function showErrorMessage(error) {
   loadingText.style.display = "none";
 }
 
-const product = {
-  id: params.get("id"),
-  title: params.get("title"),
-  description: params.get("description"),
-  price: params.get("price"),
-  urlImage: params.get("urlImage"),
-  ratingRate: params.get("ratingRate"),
-  ratingCount: params.get("ratingCount"),
-};
-
+//new code
 function searchProduct(event) {
   const query = findProduct.value.toLowerCase().trim();
-  renderData(query);
-}
 
-async function renderData(query) {
-  let data = await init();
-  productList.innerHtml = "";
-
-  if (query !== "") {
-    data = data.filter((item) => {
-      return item.title.toLowerCase().trim().includes(query);
-    });
+  if (!query) {
+    resultsContainer.classList.add("hidden");
+    return;
   }
 
-  console.log("THE RETURNED DATA: ", data);
+  try {
+    const data =  productsData || [];
 
-  productList.innerHTML = data
-    .map(
-      (item) =>
-        `<div class="card">
-        <a href="product.htm?id=${item.id}&title=${item.title}&description=${item.description}&price=${item.price}&ratingRate=${item.rating.rate}
-        &ratingCount=${item.rating.count}&urlImage=${item.image}">
-            <div class="product-image">
-              
-                  <img src="${item.image}"  alt="image">
-              
-              </div>
+    console.log(data);
+    console.log(query);
 
-              <div class="product-info">
-                
-                    <h6>${item.title}</h6>
-                    <p data-id="${item.id}"></p>
-                    <p class="price">${item.price}$</p>
-                    <p class="rating">${item.rating.rate} / 5 <span class="star">★</span>  ${item.rating.count} reviews</p>
-                
-                  <button type="button" class="btn">Add to cart</button>
-              </div>
-          </a>
-        </div>`,
-    )
-    .join("");
+    const filtered = data.filter((item) =>
+      item.title.toLowerCase().includes(query)
+    );
 
-  showLoadingText("none");
+    console.log("filtered data:", filtered);
+    renderResults(filtered);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//new code
+function renderResults(items) {
+
+  console.log("rendering results:", items);
+  if (items.length === 0) {
+    resultsContainer.innerHTML = `<div class="result-item">No results</div>`;
+    console.log("No results found");
+  } else {
+    resultsContainer.innerHTML = items
+      .map((item) => `<div class="result-item">${item.title}</div>`)
+      .join("");
+
+      console.log("Results rendered successfully");
+  }
+
+  resultsContainer.classList.remove("hidden");
 }
 
 function renderItemSelected() {
-  producList.innerHTML = `<div class="card">
+  productList.innerHTML = `<div class="card">
             <div class="product-image">
-                  <img src="${product.urlImage}"  alt="image">
+                  <img src="${params.get("urlImage")}"  alt="image">
               </div>
 
               <div class="product-info">
                 
-                 <h6>${product.title}</h6>
-                 <p data-id="${product.id}"></p>
-                 <p class="description">${product.description}</p>
-                 <p class="price">${product.price}$</p>
-                 <p class="rating">${product.ratingRate} / 5 <span class="star">★</span>  ${product.ratingCount} reviews</p>
+                 <h6>${params.get("title")}</h6>
+                 <p data-id="${params.get("id")}"></p>
+                 <p class="description">${params.get("description")}</p>
+                 <p class="price">${params.get("price")}$</p>
+                 <p class="rating">${params.get("ratingRate")} / 5 <span class="star">★</span>  ${params.get("ratingCount")} reviews</p>
                 
                  <button type="button" class="btn">Add to cart</button>
               </div>
