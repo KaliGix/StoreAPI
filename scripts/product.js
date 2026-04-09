@@ -9,7 +9,24 @@ const params = new URLSearchParams(window.location.search);
 
 findProduct.addEventListener("input", searchProduct);
 
+//new code
+resultsContainer.addEventListener("click", (event) => {
+  
+  if(event.target.classList.contains("result-item")) {
+  
+    const selectedItem = event.target.textContent;
+    const selectedProduct = productsData.find(product => product.title === selectedItem);
+    renderItemSelected(selectedProduct);
+
+  }
+});
+
 let productsData = [];
+//new code
+let productInfo = {id: params.get("id"), title: params.get("title"), description: params.get("description"), price: params.get("price"), image: params.get("urlImage"),
+  rating: {  rate: params.get("ratingRate"), count: params.get("ratingCount")}};
+
+
 
 async function init() {
   try {
@@ -23,6 +40,7 @@ async function init() {
 }
 
 init();
+renderItemSelected(productInfo);//new code parameter
 
 function showLoadingText(displayType) {
   errMessage.style.display = "none";
@@ -35,7 +53,7 @@ function showErrorMessage(error) {
   loadingText.style.display = "none";
 }
 
-//new code
+
 function searchProduct(event) {
   const query = findProduct.value.toLowerCase().trim();
 
@@ -57,7 +75,6 @@ function searchProduct(event) {
   }
 }
 
-//new code
 function renderResults(items) {
   if (items.length === 0) {
     resultsContainer.innerHTML = `<div class="result-item">No results</div>`;
@@ -70,23 +87,25 @@ function renderResults(items) {
   resultsContainer.classList.remove("hidden");
 }
 
-function renderItemSelected() {
+function renderItemSelected(productInfo) { // new code
+
+  
+  productList.innerHTML = "";//new code
   productList.innerHTML = `<div class="card">
             <div class="product-image">
-                  <img src="${params.get("urlImage")}"  alt="image">
+                  <img src="${productInfo.image}"  alt="image">
               </div>
 
               <div class="product-info">
                 
-                 <h6 class="product-title">${params.get("title")}</h6>
-                 <p data-id="${params.get("id")}"></p>
-                 <p class="description">${params.get("description")}</p>
-                 <p class="price">${params.get("price")}$</p>
-                 <p class="rating">${params.get("ratingRate")} / 5 <span class="star">★</span>  ${params.get("ratingCount")} reviews</p>
+                 <h6 class="product-title">${productInfo.title}</h6>
+                 <p data-id="${productInfo.id}"></p>
+                 <p class="description">${productInfo.description}</p>
+                 <p class="price">${productInfo.price}$</p>
+                 <p class="rating">${productInfo.rating.rate} / 5 <span class="star">★</span>  ${productInfo.rating.count} reviews</p>
                 
                  <button type="button" class="btn">Add to cart</button>
               </div>
             </div>`;
 }
 
-renderItemSelected();
