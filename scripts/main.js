@@ -44,17 +44,17 @@ async function renderData(query) {
     });
   }
 
-  console.log("THE RETURNED DATA: ", data);
+ 
 
-  productList.innerHTML = data
+  productList.innerHTML = data.products
     .map(
       (item) =>
         `<div class="card">
-        <a href="product.htm?id=${item.id}&title=${item.title}&description=${item.description}&price=${item.price}&ratingRate=${item.rating.rate}
-        &ratingCount=${item.rating.count}&urlImage=${item.image}">
+        <a href="product.htm?id=${item.id}&title=${item.title}&description=${item.description}&price=${item.price}&ratingRate=${item.rating}
+        &ratingCount=${item.reviews}&thumbnail=${item.thumbnail}">
             <div class="product-image">
               
-                  <img src="${item.image}"  alt="image">
+                  <img src="${item.thumbnail}"  alt="image">
               
               </div>
 
@@ -63,7 +63,7 @@ async function renderData(query) {
                     <h6>${item.title}</h6>
                     <p data-id="${item.id}"></p>
                     <p class="price">${item.price}$</p>
-                    <p class="rating">${item.rating.rate} / 5 <span class="star">★</span>  ${item.rating.count} reviews</p>
+                    <p class="rating">${item.rating} / 5 <span class="star">★</span>  ${item.reviews.length} reviews</p>
                 
                   <button type="button" class="btn">Add to cart</button>
               </div>

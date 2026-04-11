@@ -17,22 +17,31 @@ resultsContainer.addEventListener("click", (event) => {
     const selectedItem = event.target.textContent;
     const selectedProduct = productsData.find(product => product.title === selectedItem);
     renderItemSelected(selectedProduct);
-
+    hideSearchResults();
   }
 });
 
-let productsData = [];
 //new code
-let productInfo = {id: params.get("id"), title: params.get("title"), description: params.get("description"), price: params.get("price"), image: params.get("urlImage"),
-  rating: {  rate: params.get("ratingRate"), count: params.get("ratingCount")}};
+document.addEventListener("click", (event) => {
 
+  if(!resultsContainer.contains(event.target))
+    hideSearchResults();
+});
 
+let productsData = [];
+
+//new code
+let productInfo = {id: params.get("id"), title: params.get("title"), description: params.get("description"), price: params.get("price"), thumbnail: params.get("thumbnail"),
+  rating: params.get("ratingRate"), reviews: params.get("ratingCount")};
+
+  
 
 async function init() {
   try {
     showLoadingText("flex");
     const data = await fethAPI();
-    productsData = data;
+    productsData = data.products;
+    console.log(productsData, ": productsData");
     showLoadingText("none");
   } catch (error) {
     showErrorMessage(errorMessage);
@@ -40,7 +49,14 @@ async function init() {
 }
 
 init();
-renderItemSelected(productInfo);//new code parameter
+renderItemSelected(productInfo);
+
+
+
+function hideSearchResults() {
+  resultsContainer.classList.add("hidden");
+  findProduct.value = "";
+}
 
 function showLoadingText(displayType) {
   errMessage.style.display = "none";
@@ -64,7 +80,7 @@ function searchProduct(event) {
 
   try {
     const data = productsData || [];
-
+    console.log(productsData);
     const filtered = data.filter((item) =>
       item.title.toLowerCase().includes(query),
     );
@@ -87,13 +103,12 @@ function renderResults(items) {
   resultsContainer.classList.remove("hidden");
 }
 
-function renderItemSelected(productInfo) { // new code
+function renderItemSelected(productInfo) { 
 
-  
-  productList.innerHTML = "";//new code
+  productList.innerHTML = "";
   productList.innerHTML = `<div class="card">
             <div class="product-image">
-                  <img src="${productInfo.image}"  alt="image">
+                  <img src="${productInfo.thumbnail}"  alt="image">
               </div>
 
               <div class="product-info">
@@ -102,7 +117,7 @@ function renderItemSelected(productInfo) { // new code
                  <p data-id="${productInfo.id}"></p>
                  <p class="description">${productInfo.description}</p>
                  <p class="price">${productInfo.price}$</p>
-                 <p class="rating">${productInfo.rating.rate} / 5 <span class="star">★</span>  ${productInfo.rating.count} reviews</p>
+                 <p class="rating">${productInfo.rating} / 5 <span class="star">★</span>  ${productInfo.reviews.length} reviews</p>
                 
                  <button type="button" class="btn">Add to cart</button>
               </div>

@@ -2,7 +2,7 @@
 
 export var errorMessage = "";
 export async function fethAPI() {
-  const url = new Request("https://fakestoreapi.com/products");
+  const url = new Request("https://dummyjson.com/products");
   try {
     const response = await fetch(url);
 
