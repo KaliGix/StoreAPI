@@ -9,7 +9,7 @@ const params = new URLSearchParams(window.location.search);
 
 findProduct.addEventListener("input", searchProduct);
 
-//new code
+
 resultsContainer.addEventListener("click", (event) => {
   
   if(event.target.classList.contains("result-item")) {
@@ -21,7 +21,7 @@ resultsContainer.addEventListener("click", (event) => {
   }
 });
 
-//new code
+
 document.addEventListener("click", (event) => {
 
   if(!resultsContainer.contains(event.target))
@@ -30,7 +30,7 @@ document.addEventListener("click", (event) => {
 
 let productsData = [];
 
-//new code
+
 let productInfo = {id: params.get("id"), title: params.get("title"), description: params.get("description"), price: params.get("price"), thumbnail: params.get("thumbnail"),
   rating: params.get("ratingRate"), reviews: params.get("ratingCount")};
 
@@ -41,7 +41,7 @@ async function init() {
     showLoadingText("flex");
     const data = await fethAPI();
     productsData = data.products;
-    console.log(productsData, ": productsData");
+ 
     showLoadingText("none");
   } catch (error) {
     showErrorMessage(errorMessage);
@@ -80,7 +80,7 @@ function searchProduct(event) {
 
   try {
     const data = productsData || [];
-    console.log(productsData);
+   
     const filtered = data.filter((item) =>
       item.title.toLowerCase().includes(query),
     );
