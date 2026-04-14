@@ -17,7 +17,7 @@ async function init(){
      showLoadingText("flex");
     const data = await fetchAPI();
   
-    return data;
+    return data.products;
   } catch (error) {
     showErrorMessage(errorMessage);
   }
@@ -44,9 +44,7 @@ async function renderData(query) {
     });
   }
 
- 
-
-  productList.innerHTML = data.products
+  productList.innerHTML = data
     .map(
       (item) =>
         `<div class="card">
